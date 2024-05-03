@@ -9,8 +9,8 @@ router.get("/", function (req, res) {
   const licence_key = process.env.JSPM_LICENSE_KEY;
 
   //DO NOT MODIFY THE FOLLOWING CODE
-  const timestamp = req.query.timestamp;
-  const licence_hash = sha256(licence_key + timestamp);
+  var timestamp = req.query.timestamp;
+  var licence_hash = sha256(licence_key + timestamp);
   res.send(licence_owner + "|" + licence_hash);
 });
 
