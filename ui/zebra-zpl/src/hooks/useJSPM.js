@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   JSPrintManager,
@@ -29,6 +29,7 @@ export default () => {
   const [printers, setPrinters] = useState([]);
   const [selectedPrinter, setSelectedPrinter] = useState(null);
   const [error, setError] = useState(null);
+  const [canReload, setCanReload] = useState(true);
   const [status, setStatus] = useState(MAP_STATUS[WSStatus.Closed]);
 
   const loadJSPrintManager = async () => {
@@ -48,11 +49,17 @@ export default () => {
     setSelectedPrinter(p);
   };
 
+  const reload = () => {
+    if (!canReload) return;
+    loadJSPrintManager();
+    setCanReload(false);
+    setTimeout(() => {
+      setCanReload(true);
+    }, 2000);
+  };
+
   const updateStatus = async () => {
     setStatus(MAP_STATUS[JSPrintManager.websocket_status]);
-    if (JSPrintManager.websocket_status === WSStatus.Open) {
-      await loadJSPrintManager();
-    }
     if (JSPrintManager.websocket_status == WSStatus.Closed) {
       setError(
         "JSPrintManager (JSPM) is not installed or not running! Download JSPM Client App from https://neodynamic.com/downloads/jspm"
@@ -95,5 +102,6 @@ export default () => {
     handleSelectPrinter,
     selectedPrinter,
     loading,
+    reload,
   };
 };

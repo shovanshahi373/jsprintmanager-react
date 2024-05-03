@@ -5,7 +5,7 @@ import Loader from "../components/Loader";
 import Select from "../components/Select";
 import Button from "../components/Button";
 
-import { PrintIcon } from "../icons";
+import { PrintIcon, ReloadIcon } from "../icons";
 
 import Layout from "../layout";
 
@@ -34,6 +34,7 @@ const HomePage = () => {
     error,
     loading,
     selectedPrinter,
+    reload,
   } = useContext();
 
   return (
@@ -43,6 +44,10 @@ const HomePage = () => {
           <div>
             <h1 className="text-2xl font-bold">An occur has occured:</h1>
             <p className="text-center text-red-500">{error}</p>
+            <Button onClick={reload}>
+              <ReloadIcon />
+              <span>Reload</span>
+            </Button>
           </div>
         ) : loading ? (
           <Loader />

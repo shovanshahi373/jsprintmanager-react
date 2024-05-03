@@ -12,6 +12,7 @@ const ContextProvider = ({ children }) => {
     selectedPrinter,
     status,
     loading,
+    reload,
   } = useJSPM();
   return (
     <Context.Provider
@@ -24,6 +25,7 @@ const ContextProvider = ({ children }) => {
         status,
         loading,
         STATUS,
+        reload,
       }}
     >
       {children}
