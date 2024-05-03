@@ -31,25 +31,28 @@ export default () => {
   const [error, setError] = useState(null);
   const [status, setStatus] = useState(MAP_STATUS[WSStatus.Closed]);
 
-  useEffect(() => {
-    (async () => {
-      JSPrintManager.start()
-        .then(getPrinters)
-        .catch((err) => setError(JSON.stringify(err)))
-        .finally(() => setLoading(false));
-    })();
-  }, []);
+  const loadJSPrintManager = async () => {
+    setError(null);
+    setLoading(true);
+    JSPrintManager.start()
+      .then(getPrinters)
+      .catch((err) => setError(JSON.stringify(err)))
+      .finally(() => setLoading(false));
+  };
 
   useEffect(() => {
-    console.log({ printers });
-  }, [printers]);
+    loadJSPrintManager();
+  }, []);
 
   const handleSelectPrinter = (p) => {
     setSelectedPrinter(p);
   };
 
-  const updateStatus = () => {
+  const updateStatus = async () => {
     setStatus(MAP_STATUS[JSPrintManager.websocket_status]);
+    if (JSPrintManager.websocket_status === WSStatus.Open) {
+      await loadJSPrintManager();
+    }
     if (JSPrintManager.websocket_status == WSStatus.Closed) {
       setError(
         "JSPrintManager (JSPM) is not installed or not running! Download JSPM Client App from https://neodynamic.com/downloads/jspm"
