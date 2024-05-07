@@ -41,7 +41,7 @@ const HomePage = () => {
     <>
       <Layout>
         {error ? (
-          <div>
+          <div className="flex flex-col gap-2 justify-center items-center">
             <h1 className="text-2xl font-bold">An occur has occured:</h1>
             <p className="text-center text-red-500">{error}</p>
             <Button onClick={reload}>
